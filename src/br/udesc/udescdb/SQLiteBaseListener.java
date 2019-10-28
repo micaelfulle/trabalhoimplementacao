@@ -2,6 +2,8 @@ package br.udesc.udescdb;
 
 // Generated from SQLite.g4 by ANTLR 4.7.2
 
+import model.Coluna;
+import model.Comando;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -19,6 +21,12 @@ public class SQLiteBaseListener implements SQLiteListener {
 	 * The default implementation does nothing.
 	 * </p>
 	 */
+        private Comando comando = new  Comando() ;
+        private Coluna coluna = new Coluna();
+        
+        public Comando getComando(){
+            return comando;
+        }
 	@Override
 	public void enterParse(SQLiteParser.ParseContext ctx) {
 	}
@@ -264,6 +272,7 @@ public class SQLiteBaseListener implements SQLiteListener {
 	@Override
 	public void enterCreate_table_stmt(SQLiteParser.Create_table_stmtContext ctx) {
 		System.out.println("Comando create table");
+                comando.setTipo(Comando.CREATE);
 	}
 
 	/**
@@ -816,6 +825,19 @@ public class SQLiteBaseListener implements SQLiteListener {
 	@Override
 	public void enterType_name(SQLiteParser.Type_nameContext ctx) {
 		System.out.println("Tipo da coluna " + ctx.getText());
+                String s = ctx.getText();
+                if(s.equals(Coluna.INT)|| s.equals(Coluna.FLOAT)){
+                    coluna.setTipo(s);
+                    coluna.setTamanho(1);
+                }else{
+                    String[] t = s.replaceAll("\\)", "").split("\\(");
+                    coluna.setTipo(t[0]);
+                    coluna.setTamanho(Integer.parseInt( t[1]));
+                    
+                }
+                
+                comando.addColuna(coluna);
+                coluna =new Coluna();
 	}
 
 	/**
@@ -1501,6 +1523,8 @@ public class SQLiteBaseListener implements SQLiteListener {
 	@Override
 	public void enterTable_name(SQLiteParser.Table_nameContext ctx) {
 		System.out.println("Nome da tabela " + ctx.getText());
+                
+                comando.setNomeTabela(ctx.getText());
 	}
 
 	/**
@@ -1568,6 +1592,7 @@ public class SQLiteBaseListener implements SQLiteListener {
 	@Override
 	public void enterColumn_name(SQLiteParser.Column_nameContext ctx) {
 		System.out.println("Nome da coluna " + ctx.getText());
+                coluna.setNome(ctx.getText());
 	}
 
 	/**

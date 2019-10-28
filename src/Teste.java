@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import br.udesc.udescdb.SQLiteBaseListener;
 import br.udesc.udescdb.SQLiteLexer;
 import br.udesc.udescdb.SQLiteParser;
+import model.Comando;
 
 public class Teste {
 
@@ -22,8 +23,12 @@ public class Teste {
 		parser.setBuildParseTree(true);
 		ParseTree tree = parser.parse();
 				
+                SQLiteBaseListener sqlbl = new SQLiteBaseListener();
 		ParseTreeWalker p = new ParseTreeWalker();
-		p.walk(new SQLiteBaseListener(), tree);
+		p.walk(sqlbl, tree);
+                
+                Comando com = sqlbl.getComando();
+                System.out.println(com.toString());
 
 		// agora vamos pegar as informacoes que o listener capturou e processar o comando 
 	}
