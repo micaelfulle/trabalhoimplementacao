@@ -15,6 +15,26 @@ import java.util.List;
 public class Tabela {
     private String nome;
     private List <Coluna> listaColuna = new ArrayList<Coluna>();
+    private int posicaoFinalCabecalho;
+    private int posicaofinal;
+
+    public int getPosicaoFinalCabecalho() {
+        return posicaoFinalCabecalho;
+    }
+
+    public void setPosicaoFinalCabecalho(int posicaoFinalCabecalho) {
+        this.posicaoFinalCabecalho = posicaoFinalCabecalho;
+    }
+
+    public int getPosicaofinal() {
+        return posicaofinal;
+    }
+
+    public void setPosicaofinal(int posicaofinal) {
+        this.posicaofinal = posicaofinal;
+    }
+
+    
 
     public Tabela(){}
 
@@ -40,6 +60,11 @@ public class Tabela {
     
     public void addColuna(Coluna c){
         listaColuna.add(c);
+    }
+
+    @Override
+    public String toString() {
+        return "Tabela{" + "nome=" + nome + ", listaColuna=" + listaColuna + '}';
     }
     
 }

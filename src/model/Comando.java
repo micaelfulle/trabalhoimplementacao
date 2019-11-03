@@ -18,20 +18,22 @@ public class Comando {
     public final static String INSERT= "INSERT";
     public final static String SELECT= "SELECT";
     
-    
+    private String nomeBanco;
     private String tipo;
     private String nomeTabela;
     private List<Coluna> lista = new ArrayList<Coluna>();
 
     
     public Comando(){}
-    
-    public Comando(String tipo, String nomeTabela) {
-        this.tipo = tipo;
-        this.nomeTabela = nomeTabela;
+
+    public String getNomeBanco() {
+        return nomeBanco;
     }
 
-   
+    public void setNomeBanco(String nomeBanco) {
+        this.nomeBanco = nomeBanco;
+    }
+    
     
     public String getTipo() {
         return tipo;
@@ -63,7 +65,9 @@ public class Comando {
 
     @Override
     public String toString() {
-        return "Comando{" + "tipo=" + tipo + ", nomeTabela=" + nomeTabela + ", lista=" + lista + '}';
+        return "Comando{" + "nomeBanco=" + nomeBanco + ", tipo=" + tipo + ", nomeTabela=" + nomeTabela + ", lista=" + lista + '}';
     }
+
+    
     
 }
