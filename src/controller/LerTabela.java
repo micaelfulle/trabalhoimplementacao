@@ -66,7 +66,10 @@ public class LerTabela {
             t.addColuna(col);
             
             }
-            t.setPosicaoFinalCabecalho((int)arq.length());
+            t.setPosicaoFinalCabecalho((int) arq.getFilePointer());
+            t.setPosicaofinal((int)arq.length());
+            
+            
             arq.close();
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();

@@ -21,48 +21,78 @@ import model.Tabela;
  * @author micae
  */
 public class ComandoInsert {
-    
+
     private Comando com;
     private LerTabela leitor;
-    private Tabela tabela;
-    
-    public ComandoInsert(Comando com){
-        this.com= com;
-        leitor  =  new LerTabela(com.getNomeBanco(), com.getNomeTabela());
+    private Tabela tabelaLida;
+
+    public ComandoInsert(Comando com) {
+        this.com = com;
+        leitor = new LerTabela(com.getNomeBanco(), com.getNomeTabela());
     }
-    
-    public boolean processar(){
+
+    public boolean processar() {
         try {
-        if(validar()){
-          RandomAccessFile arq = new RandomAccessFile(com.getNomeBanco()+"/"+com.getNomeTabela() + ".dat", "rw");
-       
-        arq.close();
-        }} catch (FileNotFoundException ex) {
-               ex.printStackTrace();
-                    } catch (IOException ex) {
-           ex.printStackTrace();
+            if (validar()) {
+                RandomAccessFile arq = new RandomAccessFile(com.getNomeBanco() + "/" + com.getNomeTabela() + ".dat", "rw");
+                arq.seek(tabelaLida.getPosicaofinal());
+                for (Coluna colunaNaTabela : tabelaLida.getListaColuna()) {
+                    Coluna colunaEncontrada = null;
+                    for (Coluna colunaNaLista : com.getLista()) {
+                        if (colunaNaLista.getNome().equals(colunaNaTabela.getNome())) {
+                            colunaEncontrada = colunaNaLista;
+                        }
+                    }
+                    if (colunaNaTabela.getTipo().equals(Coluna.INT) && colunaEncontrada == null) {
+                        arq.skipBytes(4);
+                    } else if (colunaNaTabela.getTipo().equals(Coluna.INT)) {
+                        arq.writeInt(Integer.parseInt( ( (String) colunaEncontrada.getLiteral() ).replaceAll("\"", "") ) );
+                    }
+
+                    if (colunaNaTabela.getTipo().equals(Coluna.CHAR) && colunaEncontrada == null) {
+                        arq.writeChars(String.format("%1$" + colunaNaTabela.getTamanho() + "s", ""));
+                    } else if (colunaNaTabela.getTipo().equals(Coluna.CHAR)) {
+                        arq.writeChars(String.format("%1$" + colunaNaTabela.getTamanho() + "s", colunaEncontrada.getLiteral()));
+                    }
+
+                    if (colunaNaTabela.getTipo().equals(Coluna.FLOAT) && colunaEncontrada == null) {
+                        arq.skipBytes(4);
+                    } else if (colunaNaTabela.getTipo().equals(Coluna.FLOAT)) {
+                        arq.writeFloat(Float.parseFloat( ( (String) colunaEncontrada.getLiteral() ).replaceAll("\"", "") ) );
+                    }
+                }
+
+                arq.close();
+            }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         return false;
     }
-    
-    private boolean encontrarColuna(Coluna c, List<Coluna> listaColunas){
+
+    private boolean encontrarColuna(Coluna c, List<Coluna> listaColunas) {
         boolean encontrou = false;
-        for(Coluna col: listaColunas){
-            if(c.getNome().equals(col.getNome())){
+        for (Coluna col : listaColunas) {
+            if (c.getNome().equals(col.getNome())) {
                 encontrou = true;
                 break;
             }
         }
         return encontrou;
     }
-    private boolean validar(){
-        tabela = leitor.realizarLeitura();
-        for(Coluna c : com.getLista()){
-                if(!encontrarColuna(c,tabela.getListaColuna())){
-                    System.out.print("Coluna não encontrada"+c);
-                    return false;
-                }
+
+    private boolean validar() {
+        tabelaLida = leitor.realizarLeitura();
+        System.out.println(tabelaLida.getPosicaoFinalCabecalho());
+        System.out.println(tabelaLida.getPosicaofinal());
+        for (Coluna c : com.getLista()) {
+            if (!encontrarColuna(c, tabelaLida.getListaColuna())) {
+                System.out.print("Coluna não encontrada" + c);
+                return false;
             }
+        }
         return true;
     }
 }

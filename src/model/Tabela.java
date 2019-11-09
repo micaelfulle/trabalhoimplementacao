@@ -64,7 +64,9 @@ public class Tabela {
 
     @Override
     public String toString() {
-        return "Tabela{" + "nome=" + nome + ", listaColuna=" + listaColuna + '}';
+        return "Tabela{" + "nome=" + nome + ", listaColuna=" + listaColuna + ", posicaoFinalCabecalho=" + posicaoFinalCabecalho + ", posicaofinal=" + posicaofinal + '}';
     }
+
+   
     
 }
