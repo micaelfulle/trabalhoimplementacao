@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<insert:table xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.udesc.br udescdb.xsd"
+          xmlns:insert="http://www.udesc.br">
+
+
+    <inserts>
+        <insert>
+            <db>Banco</db>
+            <table>xpto</table>
+            <columns>
+                <column>
+                    <name>col1</name>
+                    <value>1</value>
+                </column>
+                <column>
+                    <name>col2</name>
+                    <value>'abc'</value>
+                </column>
+                <column>
+                    <name>col3</name>
+                    <value>3.5</value>
+                </column>
+            </columns>
+        </insert>
+
+    </inserts>
+
+</insert:table>

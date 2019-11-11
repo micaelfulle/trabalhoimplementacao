@@ -44,7 +44,7 @@ public class ComandoInsert {
                         }
                     }
                     if (colunaNaTabela.getTipo().equals(Coluna.INT) && colunaEncontrada == null) {
-                        arq.skipBytes(4);
+                        arq.writeInt(Integer.MIN_VALUE);
                     } else if (colunaNaTabela.getTipo().equals(Coluna.INT)) {
                         arq.writeInt(Integer.parseInt( ( (String) colunaEncontrada.getLiteral() ).replaceAll("\"", "") ) );
                     }
@@ -56,13 +56,15 @@ public class ComandoInsert {
                     }
 
                     if (colunaNaTabela.getTipo().equals(Coluna.FLOAT) && colunaEncontrada == null) {
-                        arq.skipBytes(4);
+                        arq.writeFloat(Float.MIN_VALUE);
                     } else if (colunaNaTabela.getTipo().equals(Coluna.FLOAT)) {
                         arq.writeFloat(Float.parseFloat( ( (String) colunaEncontrada.getLiteral() ).replaceAll("\"", "") ) );
                     }
                 }
 
                 arq.close();
+                    System.out.println(tabelaLida.getPosicaoFinalCabecalho());
+                    System.out.println(tabelaLida.getPosicaofinal());
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
@@ -85,8 +87,7 @@ public class ComandoInsert {
 
     private boolean validar() {
         tabelaLida = leitor.realizarLeitura();
-        System.out.println(tabelaLida.getPosicaoFinalCabecalho());
-        System.out.println(tabelaLida.getPosicaofinal());
+      
         for (Coluna c : com.getLista()) {
             if (!encontrarColuna(c, tabelaLida.getListaColuna())) {
                 System.out.print("Coluna não encontrada" + c);

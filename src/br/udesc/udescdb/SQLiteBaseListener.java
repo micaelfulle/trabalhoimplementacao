@@ -1257,6 +1257,7 @@ public class SQLiteBaseListener implements SQLiteListener {
     @Override
     public void enterSelect_core(SQLiteParser.Select_coreContext ctx) {
         System.out.println("Comando select");
+        comando.setTipo(Comando.SELECT);
     }
 
     /**

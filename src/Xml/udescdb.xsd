@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.udesc.br"
+           xmlns="http://www.udesc.br"
+           elementFormDefault="qualified">
 
 	<xsd:element name="inserts">
 		<xsd:complexType>
